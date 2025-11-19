@@ -10,6 +10,13 @@ typedef struct Team{
     Team *right;
 } Team;
 int size;
+void freeMem(Team **tourBracket){
+    int numLevel = ceil(log2(size)) + 1;
+    for(int i = 0 ; i < numLevel ; i++){
+        free(tourBracket[i]);
+    }
+    free(tourBracket);
+}
 Team* createNode(Team team){
     Team* newNode;
     newNode = &team;
@@ -132,7 +139,7 @@ void initializeTree(int level,int column,int maxLevel,Team **bracket,Team *root)
     initializeTree(level + 1,column*2,maxLevel,bracket,root->left);
     initializeTree(level + 1,column*2 + 1,maxLevel,bracket,root->right);
 }
-Team* initializeTour(Team tournament[]){
+Team** initializeTour(Team tournament[]){
     int numLevel = ceil(log2(size)) + 1;
     int id = 1;
     int tourSize = pow(2,numLevel - 1);
@@ -177,15 +184,17 @@ Team* initializeTour(Team tournament[]){
     // free(tournamentBracket); 
 
     
-    return champion;
+    return tournamentBracket;
 }
 int main(){
     srand(time(NULL));
     Team tour[] ={{0,"Argentina",0},{0,"Portugal",0},{0,"Spain",0},{0,"Brazil",0},{0,"Netherland",0}};
     size = sizeof(tour)/sizeof(tour[0]);
-    Team *root = initializeTour(tour);
+    Team **tournamentBracket = initializeTour(tour);
+    Team *root = &(tournamentBracket[0][0]);
     postOrderTraversal(root);
     findPotentialMeeting(root,"Portugal","Brazil",0);
     pathToWinner(root,0);
+    freeMem(tournamentBracket);
     return 0;
 }
