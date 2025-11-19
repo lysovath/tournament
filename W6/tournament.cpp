@@ -170,11 +170,11 @@ Team* initializeTour(Team tournament[]){
     Team *champion = &tournamentBracket[0][0];
     initializeTree(0,0,numLevel,tournamentBracket,champion);
 
-    //Free Allocated Memory
-    for(int i = 0 ; i < tourSize ; i++){
-        free(tournamentBracket[i]);
-    }
-    free(tournamentBracket);
+    // Free Allocated Memory
+    // for(int i = 0 ; i < numLevel ; i++){
+    //     free(tournamentBracket[i]);
+    // }
+    // free(tournamentBracket); 
 
     
     return champion;
